@@ -1,0 +1,20 @@
+File system module in node
+
+-> A module named fs is used
+
+-> const fs = require('fs');
+
+Some functions of file system module:
+    readFileSync('filename', 'encoding') -> It will read the files synchronously, therefore server will do the tasks linewise
+                                            That is, big operations will take up server's time as they came first which is not expected(Bad practise)
+
+    readFile -> Give response in callbacks. Asynchronous function.
+                fs.readFile('demo.txt', 'utf-8', ('err', txt)=>{
+                    console.log(txt)
+                })
+                First and second parameters are always error and content followed by anything else.
+
+
+
+-> npm install nodemon --save-dev [ dev dependencies]
+-> npm install -g nodemon

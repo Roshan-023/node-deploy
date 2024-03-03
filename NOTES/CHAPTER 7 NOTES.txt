@@ -1,0 +1,82 @@
+CHAPTER 7 NOTES
+    - MONGOOSE
+    const mongoose = require('mongoose');
+
+    - Connecting with database
+    main().catch(err => console.log(err));
+    async function main() {
+        await mongoose.connect('mongodb://127.0.0.1:27017/ecommerce');  //ecommerce was the name of my DB
+        console.log('DB connected')
+    }
+
+    - SCHEMAS
+    They are basically used to set some rules or parameters to the data. For instance:
+    const {Schema} = mongoose;
+
+    const productSchema = new Schema({
+        title: String,
+        description: String,
+        price: Number,
+        discountPercentage: Number,
+        rating: Number,
+        brand: String,
+        category: String,
+        thumbnail: String,
+        images: [ String ]   // Array of images having string URL
+    });
+
+    - Now this schema will be converted into model like this
+    exports.Product = mongoose.model('Product', productSchema). This schema will be used where, on the 'product'
+
+   - controller ke saath routes me chedkhaani (dekh le bkl)
+
+   -> IMPORTANT ( ASSIGNMENT SOLUTION)
+        create a user schema in mongoose with firstname, lastname, age, email. 
+        It should also have address data structure with its own schema having pincode, street, phone.
+
+        const mongoose = require('mongoose');
+
+        // Define the address schema
+        const addressSchema = new mongoose.Schema({
+        pincode: {
+            type: String,
+            required: true
+        },
+        street: {
+            type: String,
+            required: true
+        },
+        phone: {
+            type: String,
+            required: true
+        }
+        });
+
+        // Define the user schema
+        const userSchema = new mongoose.Schema({
+        firstname: {
+            type: String,
+            required: true
+        },
+        lastname: {
+            type: String,
+            required: true
+        },
+        age: {
+            type: Number,
+            required: true
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true // Ensure email uniqueness
+        },
+        address: {
+            type: addressSchema, // Embedded address schema
+            required: true
+        }
+        });
+
+
+    SOME IMPORTANT POINT REGARDING ABOVE:   
+        1. Address field is the part of parent (user) collection. No separate collection is made for it in the database.

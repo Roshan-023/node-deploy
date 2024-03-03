@@ -1,0 +1,61 @@
+CHAPTER 3 NOTES
+
+	-> Express known as DeFacto to make servers
+
+	-> const express = require('express') // Importing express
+
+	-> Creating Server in express
+		const server = new express();
+
+	-> Playing with the result
+		- res.send() => Helps in sending data in text/html format
+		- res.sendFile(abs_filepath)
+		- res.json() => Helps in sending JSON
+
+	-> Request types and creating endpoints
+		server.METHOD("/", (req,res)=>{
+    				res.json({LODA: 'LASSAN'})
+				})
+		-> METHOD => GET, PUT, POST, PATCH, DELETE
+	
+	-> Middleware => They are kind of a layer within or outside of the server. There are several types of Middlewares
+			- Built-in
+				server.use(express.json())  // Request ki json type body ko read kar lega [ bodyParser ]
+				server.use(express.urlencoded())
+
+			- Error-Handling 
+			- Application-level => Helps to manage the logs.
+				   server.use((req, res, next)=>{
+				   console.log(req.get('User-Agent'), new Date(), req.method, req.ip, req.hostname)
+				     next()
+				 })
+			
+			NOTE -> Always add the next(). Without it the server will not go beyond middleware and the app will fail
+			
+			- Router Level
+				const auth = (req,res, next)=>{
+    					if(req.body.password){		//req.body ke liye bodyParser lagega
+       						 next()
+    					}
+   					else
+        					res.sendStatus(401)
+					}
+				
+				server.get("/", auth, (req,res)=>{	// auth Middleware added to a particular route
+    						res.json({type: 'GET'})
+					})
+
+			-> Middleware se static hosting. Example: ek folder hai public naam se
+				server.use(express.static('public'))
+			   abb isse meri uss folder ke andar ki chize accessiblle ho gayi direct download ke liye. Agar ye sabse upar hoga to default "/" route le lega.
+
+	-> Playing with the request [ How to retrieve data from it ]
+		 - console.log(req.query)
+		 - req.body => json data/ Form format, etc.
+		 - server.get("/product/:id", (req,res)=>{
+   			      console.log(req.params)
+                  res.json({'type': 'GET'})
+                })
+	
+	-> const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'))
+		const products = data.products;

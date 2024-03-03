@@ -1,0 +1,62 @@
+Here i learnt how to connect node with react or how to make a real "MERN" stack application. Very bhaari kaam!!!
+
+->  the frontend and backend run on two different port, because of this we have to insatll the 'cors' package in the node
+    application and use it as a middleware.
+    server.use(cors())
+
+
+
+
+
+const getProducts = async()=>{
+      const res = await axios.get('http://localhost:8080/products/')
+      setProducts(res.data)
+}
+
+const addProduct = async(product) => {
+    const res = await axios.post('http://localhost:8080/products', product);
+    console.log(res.data)
+    // setProduct(res.data)
+}
+
+const handleClick = async(id) =>{
+    const res = await axios.delete(`http://localhost:8080/products/${id}`)
+    console.log(res.data)
+    if(res.data._id){
+      setProducts(products.filter(p=>p._id!==res.data._id))
+    }
+}
+
+.... This is how you connect frontend with backend
+
+
+
+
+Now you can use this by separately running the server(node) and react. But this is not mern application.
+
+For making it a "MERN" application you have to create a build of this react application by "npm run build".
+
+Now it is a mern stack application. The build folder contains html, css, js. Nothing that relates with react.
+But now it has become static, if you want to do some changes with the frontend, go to the react application and then again
+create its build folder and do everything again.
+ 
+You just have to put the static page like this in index.js of the node application:
+server.use(express.static(process.env.PUBLIC_DIR));
+It is a middleware and .env is a file that contains our secret data:  "PUBLIC_DIR=build"
+
+Now one more problem, on the browser if you give any url, for instance "/add". If it is present on the server it is well handled
+like this:
+        server.use('/products', productRouter.router)
+
+But what if is a react route or a route that is mentioned in the frontend but not on the backend, in such cases we use the 
+following tarika:
+                server.use('*', (req,res) => {
+                        res.sendFile(path.resolve(__dirname,'build', 'index.html'))
+                    })
+
+                What this essentially doing is that if none of the route on server matches, it looks inside the index.html of the
+                build folder which contains our react routes too!
+
+                In the above you can see path.resolve, this comes from the path package of the npm where the __dirname 
+                gives you the absolute path of current working dirrectory and then appends whatever is in the front.
+                In our case it is build and index.html

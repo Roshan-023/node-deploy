@@ -1,0 +1,24 @@
+MongoDB basics
+
+Install mongoDB, mongosh etc.
+
+To create db -> use database
+Complex "find" Syntax-> db.products.find({$or:[{rating: {$gt:4.5}}, {id:{$gt:3}}]}).sort({"price":1}) 1 For ascending and -1 for descending
+                        db.products.find({$or:[{rating: {$gt:4.5}}, {id:{$gt:3}}]}).sort({"price":1}).limit(2)
+
+db.products.countDocuments({'price': {$gt:1000}})
+
+If you want a particular things amongst collections-> db.products.find({'price':{$gt:600}}, {'title':1, '_id':0})
+
+Updation: 
+        db.products.updateOne({'id':1}, {$set: {'price': 999}}) 
+
+
+
+HIDING DATA -> 
+        . Install dotenv package
+        . Create a .env file
+        . Save anything secret you want To
+        . Import dotenv config on the top of index.js
+                -> require('dotenv').config()
+        . Acess anything by process.env.SECRET_THINGY
